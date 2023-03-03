@@ -37,6 +37,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .box-10 {
@@ -97,4 +98,24 @@ header > div {
 
 .safe {
     background-color: blue;
+}
+
+footer {
+    position: relative;
+}
+
+#score-restart {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+    text-align: center;
+}
+
+.restart {
+    display: none;
+}
+
+.show {
+    display: inline-block;
 }

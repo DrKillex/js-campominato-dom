@@ -34,13 +34,19 @@ function randomNumberArrayGenerator(howMany, between1, between2){
 };
 
 function bombPlacement (){
-    let possiblePositionList = document.querySelectorAll('.container > div');
+    possiblePositionList = document.querySelectorAll('.container > div');
+    let bombDivList = [];
     for (let i = 0; i < possiblePositionList.length; i++){
         let innerTxt = possiblePositionList[i].innerText;
         if (bombPosition.includes(Number(innerTxt))){
+            bombDivList.push(possiblePositionList[i]);
+            console.log(bombDivList.length)
             possiblePositionList[i].addEventListener('click', function(){
                 if (partita === true){
-                    possiblePositionList[i].classList.add('bomb')
+                    for (let i = 0; i < bombDivList.length; i++){
+                        bombDivList[i].classList.add('bomb')
+                    } 
+                    defeat();                 
                     partita = false
                 }
             });
@@ -48,8 +54,11 @@ function bombPlacement (){
             possiblePositionList[i].addEventListener('click', function(){
                 if (partita === true){
                     possiblePositionList[i].classList.add('safe')
-                    if (safeList.includes(possiblePositionList[i])===false){
-                        safeList.push(possiblePositionList[i])
+                    if (scoreList.includes(possiblePositionList[i])===false){
+                        scoreList.push(possiblePositionList[i])
+                        score();
+                        victory();
+                        console.log(scoreList.length, bombPosition.length)
                     }
                 }
             });
@@ -57,45 +66,67 @@ function bombPlacement (){
     };
 };
 
+function gameStarter (){
+    container.innerHTML = '';
+    difficulty = document.getElementById('difficulty').value;
+    partita = true;
+    scoreList = [];
+    restartButton.classList.remove('show')
+    switch (difficulty){
+        case 'easy':
+        myAppend(100, container, 'box-10');
+        bombPosition = randomNumberArrayGenerator(16,1,100)
+        break;
+        case 'medium':
+        myAppend(81, container, 'box-9');
+        bombPosition = randomNumberArrayGenerator(16,1,81)
+        break
+        case 'hard':
+        myAppend(49, container, 'box-7');
+        bombPosition = randomNumberArrayGenerator(16,1,49)
+        break;
+    }
+}
+
+function resButton(){
+    restartButton.classList.add('show')
+}
+
+function defeat(){
+    scoreLocator.innerText = 'che peccato, hai perso, '+ scoreLocator.innerText
+    resButton();
+}
+
+function victory(){
+    if (scoreList.length === possiblePositionList.length - bombPosition.length){
+        scoreLocator.innerText = 'congraturazioni, hai vinto, '+ scoreLocator.innerText
+        resButton()
+        partita = false
+    }
+}
+
+function score(){
+    scoreLocator.innerText = `il tuo punteggio è: ${scoreList.length}`
+}
 
 // MAIN---------------------------------------------------------------------------------------------------------
 
 const container = document.querySelector('.container');
 const playButton = document.getElementById('play');
+const restartButton = document.getElementById('restart');
+const scoreLocator = document.getElementById('score');
 let difficulty;
 let partita;
-let safeList = [];
+let scoreList = [];
+let bombPosition = [];
+let possiblePositionList = [];
 playButton.addEventListener ('click', function(){
-    container.innerHTML = '';
-    difficulty = document.getElementById('difficulty').value;
-    partita = true;
-    safeList = [];
-    switch (difficulty){
-        case 'easy':
-        myAppend(100, container, 'box-10');
-        break;
-        case 'medium':
-        myAppend(81, container, 'box-9');
-        break
-        case 'hard':
-        myAppend(49, container, 'box-7');
-        break;
-
-        // in caso di emergenza
-        // if (difficulty === 'easy'){
-        //     myAppend(100, container, 'box-10')
-        // }   else if (difficulty === 'medium'){
-        //     myAppend(81, container, 'box-9')
-        // }   else if (difficulty === 'hard'){
-        //     myAppend(49, container, 'box-7')
-        // }    
-    }
+    score();
+    gameStarter();
     bombPlacement();
 });
-
-let bombPosition = randomNumberArrayGenerator(16,1,100)
-console.log(bombPosition)
-
-
-
-
+restartButton.addEventListener ('click', function(){
+    score();
+    gameStarter();
+    bombPlacement();   
+});
