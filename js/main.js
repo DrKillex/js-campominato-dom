@@ -66,7 +66,7 @@ function bombPlacement (){
     };
 };
 
-function gameStarter (){
+function gameStarter (easy, medium, hard, howManyRnd, base){
     container.innerHTML = '';
     difficulty = document.getElementById('difficulty').value;
     partita = true;
@@ -74,16 +74,16 @@ function gameStarter (){
     restartButton.classList.remove('show')
     switch (difficulty){
         case 'easy':
-        myAppend(100, container, 'box-10');
-        bombPosition = randomNumberArrayGenerator(16,1,100)
+        myAppend(easy, container, 'box-10');
+        bombPosition = randomNumberArrayGenerator(howManyRnd, base, easy)
         break;
         case 'medium':
-        myAppend(81, container, 'box-9');
-        bombPosition = randomNumberArrayGenerator(16,1,81)
+        myAppend(medium, container, 'box-9');
+        bombPosition = randomNumberArrayGenerator(howManyRnd, base, medium)
         break
         case 'hard':
-        myAppend(49, container, 'box-7');
-        bombPosition = randomNumberArrayGenerator(16,1,49)
+        myAppend(hard, container, 'box-7');
+        bombPosition = randomNumberArrayGenerator(howManyRnd, base, hard)
         break;
     }
 }
@@ -122,11 +122,11 @@ let bombPosition = [];
 let possiblePositionList = [];
 playButton.addEventListener ('click', function(){
     score();
-    gameStarter();
+    gameStarter(100, 81, 49, 16, 1);
     bombPlacement();
 });
 restartButton.addEventListener ('click', function(){
     score();
-    gameStarter();
+    gameStarter(100, 81, 49, 16, 1);
     bombPlacement();   
 });
