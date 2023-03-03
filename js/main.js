@@ -33,23 +33,26 @@ function randomNumberArrayGenerator(howMany, between1, between2){
     return bombPosition
 };
 
-function test(prova){
-    prova.classList.add('safe')
-                prova.removeEventListener('click', test)
-                  
-}
-
 function bombPlacement (){
     let possiblePositionList = document.querySelectorAll('.container > div');
     for (let i = 0; i < possiblePositionList.length; i++){
         let innerTxt = possiblePositionList[i].innerText;
         if (bombPosition.includes(Number(innerTxt))){
             possiblePositionList[i].addEventListener('click', function(){
-                possiblePositionList[i].classList.add('bomb')
+                if (partita === true){
+                    possiblePositionList[i].classList.add('bomb')
+                    partita = false
+                }
             });
         } else {
-            possiblePositionList[i].addEventListener('click', test(possiblePositionList[i])
-            );
+            possiblePositionList[i].addEventListener('click', function(){
+                if (partita === true){
+                    possiblePositionList[i].classList.add('safe')
+                    if (safeList.includes(possiblePositionList[i])===false){
+                        safeList.push(possiblePositionList[i])
+                    }
+                }
+            });
         };                 
     };
 };
@@ -60,10 +63,13 @@ function bombPlacement (){
 const container = document.querySelector('.container');
 const playButton = document.getElementById('play');
 let difficulty;
-
+let partita;
+let safeList = [];
 playButton.addEventListener ('click', function(){
     container.innerHTML = '';
     difficulty = document.getElementById('difficulty').value;
+    partita = true;
+    safeList = [];
     switch (difficulty){
         case 'easy':
         myAppend(100, container, 'box-10');
