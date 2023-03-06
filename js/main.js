@@ -71,20 +71,18 @@ function gameStarter (easy, medium, hard, howManyRnd, base){                    
     difficulty = document.getElementById('difficulty').value;
     partita = true;
     scoreList = [];
-    restartButton.classList.remove('show')
+    restartButton.classList.remove('show');
+    bombPosition = randomNumberArrayGenerator(howManyRnd, base, easy)
     switch (difficulty){
-        case 'easy':
-        myAppend(easy, container, 'box-10');
-        bombPosition = randomNumberArrayGenerator(howManyRnd, base, easy)
-        break;
         case 'medium':
-        myAppend(medium, container, 'box-9');
-        bombPosition = randomNumberArrayGenerator(howManyRnd, base, medium)
-        break
+            myAppend(medium, container, 'box-9');
+            break;
         case 'hard':
-        myAppend(hard, container, 'box-7');
-        bombPosition = randomNumberArrayGenerator(howManyRnd, base, hard)
-        break;
+            myAppend(hard, container, 'box-7');
+            break;
+        case 'easy':
+        default:
+            myAppend(easy, container, 'box-10');
     }
 }
 
