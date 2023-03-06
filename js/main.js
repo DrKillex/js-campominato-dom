@@ -22,12 +22,11 @@ function getRandomInt(min, max) {        //funzione genera numeri interi random 
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-function randomNumberArrayGenerator(howMany, between1, between2){    //funzione genera array di numeri random e controlla non siano gia stati scelti
-    let bombPosition = [];
+function randomNumberArrayGenerator(howMany, between1, between2){    //funzione genera array di numeri random e controlla non siano gia stati scelti    
     while (bombPosition.length < howMany){
-    let possibleNumber = getRandomInt(between1, between2)
+    let possibleNumber = getRandomInt(between1, between2);
     if (bombPosition.includes(possibleNumber) === false){
-        bombPosition.push(possibleNumber)
+        bombPosition.push(possibleNumber);
     }
     }
     return bombPosition
@@ -40,25 +39,23 @@ function bombPlacement (){                                                      
         let innerTxt = possiblePositionList[i].innerText;
         if (bombPosition.includes(Number(innerTxt))){
             bombDivList.push(possiblePositionList[i]);
-            console.log(bombDivList.length)
             possiblePositionList[i].addEventListener('click', function(){
                 if (partita === true){
                     for (let i = 0; i < bombDivList.length; i++){
-                        bombDivList[i].classList.add('bomb')
+                        bombDivList[i].classList.add('bomb');
                     } 
                     defeat();                 
-                    partita = false
+                    partita = false;
                 }
             });
         } else {
             possiblePositionList[i].addEventListener('click', function(){
                 if (partita === true){
-                    possiblePositionList[i].classList.add('safe')
+                    possiblePositionList[i].classList.add('safe');
                     if (scoreList.includes(possiblePositionList[i])===false){
-                        scoreList.push(possiblePositionList[i])
+                        scoreList.push(possiblePositionList[i]);
                         score();
                         victory();
-                        console.log(scoreList.length, bombPosition.length)
                     }
                 }
             });
@@ -87,24 +84,24 @@ function gameStarter (easy, medium, hard, howManyRnd, base){                    
 }
 
 function resButton(){                                                       //funzione restart button compare a fine partita
-    restartButton.classList.add('show')
+    restartButton.classList.add('show');
 }
 
 function defeat(){                                                                  //funzione sconfitta
-    scoreLocator.innerText = 'che peccato, hai perso, '+ scoreLocator.innerText
+    scoreLocator.innerText = 'che peccato, hai perso, '+ scoreLocator.innerText;
     resButton();
 }
 
 function victory(){                                                                     //funzione vittoria
     if (scoreList.length === possiblePositionList.length - bombPosition.length){
-        scoreLocator.innerText = 'congraturazioni, hai vinto, '+ scoreLocator.innerText
-        resButton()
-        partita = false
+        scoreLocator.innerText = 'congraturazioni, hai vinto, '+ scoreLocator.innerText;
+        resButton();
+        partita = false;
     }
 }
 
 function score(){                                                                           //funzione punteggio
-    scoreLocator.innerText = `il tuo punteggio è: ${scoreList.length}`
+    scoreLocator.innerText = `il tuo punteggio è: ${scoreList.length}`;
 }
 
 // MAIN---------------------------------------------------------------------------------------------------------
@@ -122,9 +119,11 @@ playButton.addEventListener ('click', function(){                       //evento
     score();
     gameStarter(100, 81, 49, 16, 1);
     bombPlacement();
+    console.log(bombPosition);
 });
 restartButton.addEventListener ('click', function(){                    //evento bottone restart
     score();
     gameStarter(100, 81, 49, 16, 1);
-    bombPlacement();   
+    bombPlacement(); 
+    console.log(bombPosition);
 });
